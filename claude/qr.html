@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Buy the Dev a Coffee</title>
+  <link rel="stylesheet" href="style-portal.css">
+  <!-- or style2.css if you prefer that look -->
+  <style>
+    .qr-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .qr-card {
+      background: var(--bg-card, #ffffff);
+      border-radius: var(--radius-lg, 16px);
+      border: 1px solid var(--border, #e5e7eb);
+      padding: 24px 28px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .qr-card h1 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .qr-card p {
+      font-size: 13px;
+      margin-bottom: 16px;
+      color: var(--text-muted, #6b7280);
+    }
+    .qr-card img {
+      width: 220px;
+      max-width: 70vw;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="qr-wrapper">
+    <div class="qr-card">
+      <h1>Get a coffee for the dev</h1>
+      <p>Scan this QR code to support the developer.</p>
+      <!-- replace qr-code.png with your real QR image file name -->
+      <img src="QRUPI.jpeg" alt="Support the developer QR">
+    </div>
+  </div>
+</body>
+</html>

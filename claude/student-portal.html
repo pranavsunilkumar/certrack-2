@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Student Portal – Certificates HQ</title>
+  <link rel="stylesheet" href="style-portal.css" />
+</head>
+<body>
+  <div class="portal">
+    <header>
+      <h1> Student Portal</h1>
+      <div class="header-right">
+        <span id="user-name"></span>
+        <button onclick="logout()" class="btn-logout">Logout</button>
+      </div>
+    </header>
+
+    <nav class="portal-nav">
+      <button class="nav-tab active" data-tab="certificates">Certificates</button>
+      <button class="nav-tab" data-tab="courses">Courses & Contests</button>
+      <button class="nav-tab" data-tab="requests">My Requests</button>
+      <button class="nav-tab" data-tab="resume">Resume Builder</button>
+      <button class="nav-tab" data-tab="profile">Profile</button>
+    </nav>
+
+    <!-- Certificates tab -->
+    <section class="tab-panel active" data-panel="certificates">
+      <div class="panel-header">
+        <h2>My Certificates</h2>
+        <button class="btn-primary" id="add-cert-btn">+ Add Certificate</button>
+      </div>
+      <div id="cert-list" class="card-grid"></div>
+      <p id="cert-empty" class="empty-state">No certificates yet. Add your first one!</p>
+    </section>
+
+    <!-- Courses & Contests tab -->
+    <section class="tab-panel" data-panel="courses">
+      <div class="panel-header">
+        <h2>Trending Courses & Competitions</h2>
+      </div>
+      <div class="filter-row">
+        <label>Course Topic:</label>
+        <div class="chip-row" id="course-filters">
+          <button class="chip active" data-topic="all">All</button>
+          <button class="chip" data-topic="ai">AI & Data</button>
+          <button class="chip" data-topic="cloud">Cloud & DevOps</button>
+          <button class="chip" data-topic="security">Cybersecurity</button>
+          <button class="chip" data-topic="web">Web & JS</button>
+        </div>
+      </div>
+      <h3>Courses</h3>
+      <div id="course-list" class="card-grid"></div>
+
+      <div class="filter-row" style="margin-top:20px;">
+        <label>Contest Type:</label>
+        <div class="chip-row" id="contest-filters">
+          <button class="chip active" data-ctype="all">All</button>
+          <button class="chip" data-ctype="coding">Coding</button>
+          <button class="chip" data-ctype="hackathon">Hackathons</button>
+          <button class="chip" data-ctype="scholar">Scholarships</button>
+        </div>
+      </div>
+      <h3>Competitions</h3>
+      <div id="contest-list" class="card-grid"></div>
+    </section>
+
+    <!-- Requests tab -->
+    <section class="tab-panel" data-panel="requests">
+      <div class="panel-header">
+        <h2>My Leave Requests</h2>
+        <button class="btn-primary" id="new-request-btn">+ New Request</button>
+      </div>
+      <div id="request-list" class="card-grid"></div>
+      <p id="request-empty" class="empty-state">No requests yet.</p>
+
+      <!-- New request form (hidden) -->
+      <div id="request-form" class="form-panel" style="display:none;">
+        <h3>Create Leave Request</h3>
+        <div class="form-group">
+          <label>Event Name</label>
+          <input type="text" id="event-name" />
+        </div>
+        <div class="form-group">
+          <label>Event Type</label>
+          <select id="event-type">
+            <option value="competition">Competition</option>
+            <option value="course">Course</option>
+            <option value="exam">Exam</option>
+            <option value="conference">Conference</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>From Date</label>
+          <input type="date" id="date-from" />
+        </div>
+        <div class="form-group">
+          <label>To Date</label>
+          <input type="date" id="date-to" />
+        </div>
+        <div class="form-group">
+          <label>Proof File</label>
+          <input type="file" id="proof-file" />
+        </div>
+        <div class="form-group">
+          <label>Notes</label>
+          <textarea id="req-notes"></textarea>
+        </div>
+
+        <!-- Teachers selection -->
+        <div class="form-group">
+          <label>Send request to (Teacher(s))</label>
+          <div class="teacher-select-grid" id="teacher-select-list" style="display:flex;flex-wrap:wrap;gap:10px;"></div>
+          <small style="opacity:.85">Request will go to selected teacher(s). HOD can override teacher decision.</small>
+        </div>
+
+        <button class="btn-primary" id="submit-request-btn">Submit</button>
+        <button class="btn-secondary" id="cancel-request-btn">Cancel</button>
+      </div>
+    </section>
+
+<!-- Profile tab (expanded) -->
+    <section class="tab-panel" data-panel="profile">
+      <div class="panel-header">
+        <h2>My Profile</h2>
+      </div>
+      <div class="profile-form">
+        <h3 style="margin-bottom:10px;color:var(--accent)">Personal Info</h3>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="p-name" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="p-email" />
+        </div>
+        <div class="form-group">
+          <label>Phone</label>
+          <input type="text" id="p-phone" placeholder="+91-XXXXXXXXXX" />
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="p-dob" />
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select id="p-gender">
+            <option value="">Prefer not to say</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <h3 style="margin:16px 0 10px;color:var(--accent)">Academic Info</h3>
+        <div class="form-group">
+          <label>Institute</label>
+          <input type="text" id="p-institute" />
+        </div>
+        <div class="form-group">
+          <label>Roll No</label>
+          <input type="text" id="p-roll" />
+        </div>
+        <div class="form-group">
+          <label>Degree</label>
+          <input type="text" id="p-degree" placeholder="B.E. / B.Tech" />
+        </div>
+        <div class="form-group">
+          <label>Branch</label>
+          <input type="text" id="p-branch" placeholder="Computer Science" />
+        </div>
+        <div class="form-group">
+          <label>College / University</label>
+          <input type="text" id="p-college" />
+        </div>
+        <div class="form-group">
+          <label>Graduation Year</label>
+          <input type="text" id="p-grad-year" placeholder="2028" />
+        </div>
+        <div class="form-group">
+          <label>CGPA</label>
+          <input type="text" id="p-cgpa" placeholder="8.5 / 10" />
+        </div>
+
+        <h3 style="margin:16px 0 10px;color:var(--accent)">Links & Skills</h3>
+        <div class="form-group">
+          <label>LinkedIn</label>
+          <input type="url" id="p-linkedin" placeholder="https://linkedin.com/in/..." />
+        </div>
+        <div class="form-group">
+          <label>GitHub</label>
+          <input type="url" id="p-github" placeholder="https://github.com/..." />
+        </div>
+        <div class="form-group">
+          <label>Key Skills (comma separated)</label>
+          <textarea id="p-skills" rows="2" placeholder="Python, JavaScript, ML..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Bio / About Me</label>
+          <textarea id="p-bio" rows="3" placeholder="Tell us a bit about yourself..."></textarea>
+        </div>
+
+        <h3 style="margin:16px 0 10px;color:var(--accent)">Address</h3>
+        <div class="form-group">
+          <label>Address</label>
+          <textarea id="p-address" rows="2"></textarea>
+        </div>
+        <div class="form-group">
+          <label>City</label>
+          <input type="text" id="p-city" />
+        </div>
+        <div class="form-group">
+          <label>State</label>
+          <input type="text" id="p-state" />
+        </div>
+
+        <button class="btn-primary" id="save-profile-btn">Save Profile</button>
+      </div>
+    </section>
+
+    <!-- Resume Builder tab -->
+    <section class="tab-panel" data-panel="resume">
+      <div class="panel-header">
+        <h2>Resume Builder</h2>
+      </div>
+
+      <div class="resume-layout">
+        <!-- LEFT: form -->
+        <div class="resume-form">
+          <div class="profile-form">
+            <div class="form-group">
+              <label for="res-name">Full Name</label>
+              <input type="text" id="res-name" placeholder="Your full name" />
+            </div>
+
+            <div class="form-group">
+              <label for="res-email">Email</label>
+              <input type="email" id="res-email" placeholder="you@example.com" />
+            </div>
+
+            <div class="form-group">
+              <label for="res-phone">Phone</label>
+              <input type="text" id="res-phone" placeholder="+91-XXXXXXXXXX" />
+            </div>
+
+            <div class="form-group">
+              <label for="res-linkedin">LinkedIn</label>
+              <input type="text" id="res-linkedin" placeholder="https://linkedin.com/in/your-id" />
+            </div>
+
+            <div class="form-group">
+              <label for="res-github">GitHub</label>
+              <input type="text" id="res-github" placeholder="https://github.com/pranavsunilkumar" />
+            </div>
+
+            <div class="form-group">
+  <label for="res-degree">Degree & Branch</label>
+  <input type="text" id="res-degree" placeholder="B.E. CSE" />
+</div>
+
+<div class="form-group">
+  <label for="res-college">College / University</label>
+  <input type="text" id="res-college" placeholder="Your College Name" />
+</div>
+
+<div class="form-group">
+  <label for="res-grad-year">Graduation Year</label>
+  <input type="text" id="res-grad-year" placeholder="2028" />
+</div>
+
+<div class="form-group">
+  <label for="res-cgpa">CGPA</label>
+  <input type="text" id="res-cgpa" placeholder="8.5 / 10" />
+</div>
+
+
+            <div class="form-group">
+              <label for="res-role">Target Job Role</label>
+              <input type="text" id="res-role" placeholder="e.g. Web Developer, Data Analyst" />
+            </div>
+
+            <div class="form-group">
+              <label for="res-skills">Key Skills (comma separated)</label>
+              <textarea id="res-skills" rows="2"
+                placeholder="Java, HTML, CSS, JavaScript, Python"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="res-projects">Projects</label>
+              <textarea id="res-projects" rows="3"
+                placeholder="Project Title – Tech stack – 1–2 lines impact."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="res-extra">Extra (Positions, Achievements, Hobbies)</label>
+              <textarea id="res-extra" rows="3"
+                placeholder="Positions of responsibility, achievements, hobbies."></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="res-summary">Summary</label>
+              <textarea id="res-summary" rows="3"
+                placeholder="2–3 lines about you, skills and career goal."></textarea>
+            </div>
+
+            <button class="btn-primary" id="build-resume-btn" type="button">Generate Resume</button>
+            <button class="btn-secondary" id="copy-resume-btn" type="button">Copy to Clipboard</button>
+            <button class="btn-secondary" id="download-resume-btn" type="button">Download as .txt</button>
+          </div>
+        </div>
+
+        <!-- RIGHT: suggestions + preview -->
+        <div class="resume-preview-side">
+          <div class="card">
+            <h3>Suggested Certificates / Courses</h3>
+            <p id="resume-suggest-text" class="empty-state" style="margin-top:8px;">
+              Enter a job role above to see suggestions.
+            </p>
+            <ul id="resume-suggest-list"
+                style="margin-top:8px; padding-left:18px; font-size:13px;"></ul>
+          </div>
+
+          <div class="card" style="margin-top:16px;">
+            <h3>Resume Preview</h3>
+            <div id="resume-preview"
+                 style="margin-top:8px; text-align:left; font-size:13px; line-height:1.5; white-space:pre-line;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="app.js"></script>
+  <script src="student-portal.js"></script>
+
+  <footer class="site-footer">
+    <p class="footer-title">Need help? Contact the support team.</p>
+    <div class="footer-links">
+      <a href="mailto:1dt24cg029@gmamil.com">Email</a>
+      <span>•</span>
+      <a href="https://discord.gg/4Ng864Nm" target="_blank">Discord</a>
+      <span>•</span>
+      <a href="https://www.linkedin.com/in/pranavsunilkumar886111812/" target="_blank">LinkedIn</a>
+      <span>•</span>
+      <a href="https://github.com/your-username" target="_blank">GitHub</a>
+      <span>•</span>
+      <a href="qr.html" target="_blank">Get a coffee for the dev</a>
+    </div>
+  </footer>
+</body>
+</html>

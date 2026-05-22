@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Certificates HQ – Login</title>
+  <link rel="stylesheet" href="style2.css" />
+</head>
+<body>
+<div class="page">
+    <div class="bg-anime" aria-hidden="true">
+      <div class="stars"></div>
+      <div class="petals"></div>
+    </div>
+    <div class="main">
+      <div class="card anime-card">
+<div class="card-icon anime-pop"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M480-120v-80h280v-560H480v-80h280q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H480Zm-80-160-55-58 102-102H120v-80h327L345-622l55-58 200 200-200 200Z"/></svg></div>
+        <div class="logo-upload">
+          <label class="logo-label" for="logo-input">Logo (optional)</label>
+          <input id="logo-input" type="file" accept="image/*" class="logo-input" />
+          <div id="logo-preview" class="logo-preview" aria-hidden="true"></div>
+        </div>
+        <h1 class="anime-text">Login</h1>
+        <p class="subtitle anime-text">Sign in to your Certificates HQ account</p>
+
+        <form id="login-form">
+          <div class="field">
+            <span>Email</span>
+            <input type="email" name="email" required />
+          </div>
+          <div class="field">
+            <span>Password</span>
+            <input type="password" name="password" required />
+          </div>
+          <div class="field">
+            <span>Login as</span>
+            <select id="role-select" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e5e7eb;">
+              <option value="student">Student</option>
+              <option value="teacher">Teacher</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+<button type="submit" class="primary-btn anime-btn">Login</button>
+        </form>
+
+        <p class="small-text">
+          Don't have an account? <a href="signup.html">Sign up</a>
+        </p>
+        <p class="small-text">
+          <a href="forgot.html">Forgot password?</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="auth-logo.js"></script>
+</body>
+</html>
