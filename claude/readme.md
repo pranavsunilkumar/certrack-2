@@ -1,68 +1,64 @@
-## Certificates HQ – Project Overview
+# Certificates HQ
 
-**What it is:** A web app for managing student certificates, leave/event requests, and approvals across students, teachers, and admins.
+A web app for managing student certificates, leave/event requests, and approvals across students, teachers, and admins.
 
----
+## Stack
+- **Frontend:** Static HTML, CSS, and vanilla JavaScript in `frontend/`
+- **Backend:** Node.js + Express in `backend/`
+- **Database:** PostgreSQL
+- **Auth:** JWT with bcrypt password hashing
+- **Demo mode:** Frontend falls back to localStorage when the API is unreachable
 
-### Tech Stack
-**Frontend:** Plain HTML + CSS + Vanilla JS (no framework)
-**Backend:** Node.js + Express
-**Database:** PostgreSQL
-**Auth:** JWT (with bcrypt password hashing)
-**Demo mode:** Falls back to localStorage if backend is unreachable
+## Project structure
+```text
+frontend/                 Static client and assets
+  login.html              Authentication entrypoint
+  student-portal.html     Student portal
+  teacher-portal.html     Teacher portal
+  admin-portal.html       Admin portal
+  app.js                  Shared auth and API helper
+backend/
+  .env.example            Backend configuration template
+  schema.sql              PostgreSQL schema and seed data
+  package.json            API scripts and dependencies
+  src/
+    server.js             Express entrypoint
+    db.js                 PostgreSQL pool
+    middleware/auth.js    JWT and role middleware
+    routes/               Auth, student, teacher, and admin routes
+DEPLOYMENT.md             Deployment and API reference
+TODO.md                   Remaining work
+```
 
----
+## Run locally
+1. Start PostgreSQL and apply the schema:
+   ```powershell
+   psql -U chquser -d certificateshq -f backend/schema.sql
+   ```
+2. Create the backend environment file:
+   ```powershell
+   Copy-Item backend/.env.example backend/.env
+   ```
+   Edit `backend/.env` with a real `DATABASE_URL` and `JWT_SECRET`.
+3. Install and start the API:
+   ```powershell
+   npm install --prefix backend
+   npm start --prefix backend
+   ```
+   The API runs at `http://localhost:3001`.
+4. In another terminal, serve the static frontend:
+   ```powershell
+   python -m http.server 8080 --directory frontend
+   ```
+   Open `http://localhost:8080/login.html`.
 
-### Roles & Portals
+For a deployed frontend, define `window.CHQ_API_BASE` before loading `app.js`; otherwise local development defaults to `http://localhost:3001/api`.
 
-**Student Portal** (`student-portal.html`)
-- Add/delete certificates
-- Browse trending courses & competitions
-- Submit leave/event requests (with teacher routing)
-- Full profile editor (19 fields: personal, academic, links, address)
-- Resume builder with live preview, copy & download
+## Demo credentials
+| Role | Email | Password |
+|---|---|---|
+| Student | student1@example.com | pass123 |
+| Teacher | teacher1@example.com | pass123 |
+| Admin | admin1@example.com | pass123 |
 
-**Teacher Portal** (`teacher-portal.html`)
-- View & approve/reject pending student requests
-- See approved and rejected request history
-- View assigned students with profile, certs, attendance, achievements, GitHub streak
-- HOD mode: can override teacher decisions (final approval)
-- Profile editor
-
-**Admin Portal** (`admin-portal.html`)
-- Dashboard stats (institutes, students, teachers, requests)
-- All requests with status filtering + email notification trigger
-- Institute management (add/delete)
-- Analytics with 7 charts: signups/day, logins/day, requests/day (stacked), approval doughnut, certs/day, monthly growth, top institutes by students
-
----
-
-### Backend Routes (all under `/api/`)
-| Prefix | Key actions |
-|--------|-------------|
-| `/auth` | signup, login, forgot-password |
-| `/student` | profile CRUD, certificates CRUD, requests CRUD |
-| `/teacher` | profile, pending/approved requests, approve/reject, students list |
-| `/admin` | dashboard stats, analytics, all requests, institutes CRUD, users list |
-
----
-
-### File Map
-| File | Purpose |
-|------|---------|
-| `server.js` | Express entry point |
-| `auth.js / student.js / teacher.js / admin.js` | Route handlers |
-| `db.js` | PostgreSQL pool |
-| `schema.sql` | DB schema + seed data |
-| `app.js` | Frontend auth, API helper, demo users |
-| `style2.css` | Auth pages styling (glassmorphism) |
-| `style-portal.css` | Portal pages styling |
-
----
-
-### Key Design Decisions to Know
-- **Dual mode:** Every API call has a localStorage fallback for demo/offline use
-- **UUID primary keys** throughout the DB
-- **HOD is a teacher** with a special flag — can override any teacher decision
-- **Analytics events table** tracks logins, signups, cert additions for charts
-- Backend not yet restructured into `/backend` folder (see `TODO.md`)
+Change seeded passwords before production use.

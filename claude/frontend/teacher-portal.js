@@ -10,6 +10,7 @@
 // ============================================================
 
 const auth = requireRole('teacher');
+if (!auth) throw new Error('Not authenticated. Stopping execution to wait for redirect.');
 document.getElementById('user-name').textContent = auth.name;
 
 let allRequests = JSON.parse(localStorage.getItem('chq-all-requests') || '[]');

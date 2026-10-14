@@ -116,7 +116,7 @@ INSERT INTO users (name, email, password, role, institute)
 VALUES (
   'Admin ji',
   'admin1@example.com',
-  '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj5oFZRW.Rcy', -- pass123
+  '$2a$12$fGCVLCIlv8m9AEON2A.7AOhE06wV4YjA3nHEx0iqOEX/5L/.nYX/K', -- pass123
   'admin',
   'System'
 ) ON CONFLICT (email) DO NOTHING;
@@ -126,7 +126,7 @@ INSERT INTO users (name, email, password, role, institute)
 VALUES (
   'Dr. Sarvepalli Radhakrishnan',
   'teacher1@example.com',
-  '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj5oFZRW.Rcy', -- pass123
+  '$2a$12$fGCVLCIlv8m9AEON2A.7AOhE06wV4YjA3nHEx0iqOEX/5L/.nYX/K', -- pass123
   'teacher',
   'DSI'
 ) ON CONFLICT (email) DO NOTHING;
@@ -136,7 +136,7 @@ INSERT INTO users (name, email, password, role, institute)
 VALUES (
   'Pranav',
   'student1@example.com',
-  '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj5oFZRW.Rcy', -- pass123
+  '$2a$12$fGCVLCIlv8m9AEON2A.7AOhE06wV4YjA3nHEx0iqOEX/5L/.nYX/K', -- pass123
   'student',
   'DSATM'
 ) ON CONFLICT (email) DO NOTHING;

@@ -3,7 +3,7 @@
 // Handles auth, API calls with JWT, and localStorage fallback
 // ============================================================
 
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = window.CHQ_API_BASE || 'http://localhost:3001/api';
 
 // ── API HELPER ───────────────────────────────────────────────
 async function apiCall(method, path, body = null) {
@@ -117,7 +117,14 @@ function redirectByRole(role) {
 function checkAuth() {
   const auth = localStorage.getItem('chq-auth');
   if (!auth) { window.location.href = 'login.html'; return null; }
-  return JSON.parse(auth);
+  try {
+    return JSON.parse(auth);
+  } catch (_) {
+    localStorage.removeItem('chq-auth');
+    localStorage.removeItem('chq-token');
+    window.location.href = 'login.html';
+    return null;
+  }
 }
 
 function logout() {

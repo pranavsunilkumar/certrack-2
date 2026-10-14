@@ -46,7 +46,7 @@ npm start
 For production, use PM2:
 ```bash
 npm install -g pm2
-pm2 start server.js --name chq-api
+pm2 start src/server.js --name chq-api
 pm2 save
 pm2 startup
 ```
@@ -55,9 +55,10 @@ pm2 startup
 
 ## 3. Frontend Setup
 
-Update `API_BASE` in `app.js` to point to your server:
-```js
-const API_BASE = 'https://your-domain.com/api';  // change this line
+For local development, `frontend/app.js` uses `http://localhost:3001/api`. For a deployed frontend, set `window.CHQ_API_BASE` before loading `app.js`, or change the fallback value in `frontend/app.js`:
+```html
+<script>window.CHQ_API_BASE = 'https://your-domain.com/api';</script>
+<script src="app.js"></script>
 ```
 
 Serve the HTML files with Nginx:
@@ -84,7 +85,7 @@ server {
 Copy files:
 ```bash
 sudo mkdir -p /var/www/certificateshq
-sudo cp *.html *.css *.js /var/www/certificateshq/
+sudo cp -r frontend/* /var/www/certificateshq/
 ```
 
 ---

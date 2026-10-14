@@ -70,6 +70,21 @@ router.get('/requests/approved', ...teacherOnly, async (req, res) => {
   }
 });
 
+router.get('/requests/rejected', ...teacherOnly, async (req, res) => {
+  try {
+    const result = await db.query(
+      `SELECT lr.*, u.name AS approver_name
+       FROM leave_requests lr
+       LEFT JOIN users u ON u.id = lr.approved_by
+       WHERE lr.status = 'rejected' ORDER BY lr.approved_at DESC`
+    );
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 router.patch('/requests/:id/approve', ...teacherOnly, async (req, res) => {
   try {
     const result = await db.query(

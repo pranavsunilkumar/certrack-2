@@ -3,6 +3,7 @@
 // ============================================================
 
 const auth = requireRole('admin');
+if (!auth) throw new Error('Not authenticated. Stopping execution to wait for redirect.');
 document.getElementById('user-name').textContent = auth.name;
 
 let institutes = JSON.parse(localStorage.getItem('chq-institutes') || '[]');
